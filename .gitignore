@@ -1,0 +1,28 @@
+# Environment & secrets
+.env
+*.pem
+.aws/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Data
+*.csv
+*.parquet
+data/
+
+# Docker
+*.log
+
+# OS
+.DS_Store
