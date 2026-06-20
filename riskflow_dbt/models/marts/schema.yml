@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: cost_outcomes
+    columns:
+      - name: txn_date
+        tests:
+          - unique
+          - not_null
