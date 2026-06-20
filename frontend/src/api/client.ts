@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://riskflow-api-1odp.onrender.com";
 
 export const getCostAnalysis = () =>
   axios.get(`${API_BASE}/api/cost-analysis`).then((res) => res.data);
