@@ -7,6 +7,30 @@ from backend.cost_model import assign_segment, decide_transaction
 
 app = FastAPI(title="RiskFlow Decisioning API")
 
+import boto3
+
+dynamodb_resource = boto3.resource("dynamodb", region_name="us-east-1")
+velocity_table = dynamodb_resource.Table("riskflow-card-velocity")
+
+# Documented assumption, not derived from this dataset:
+# more than 5 transactions/hour from one card resembles card-testing fraud patterns
+VELOCITY_REVIEW_THRESHOLD = 5
+
+def get_card_velocity(card_id: str):
+    try:
+        response = velocity_table.get_item(Key={"card_id": card_id})
+        item = response.get("Item")
+        if item:
+            return {
+                "txn_count_1h": int(item.get("txn_count_1h", 0)),
+                "txn_count_24h": int(item.get("txn_count_24h", 0)),
+            }
+    except Exception:
+        pass
+    # Graceful degradation: new card, or DynamoDB temporarily unreachable —
+    # default to "no known velocity" rather than failing the whole request
+    return {"txn_count_1h": 0, "txn_count_24h": 0}
+
 # Loaded once at startup — not per-request
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -56,6 +80,10 @@ def decide(txn: Transaction):
     segment = assign_segment({"card6": txn.card6, "amount": txn.amount})
     decision, cost_approve, cost_decline = decide_transaction(fraud_probability, txn.amount, segment)
 
+    velocity = get_card_velocity(str(txn.card1))
+    if decision == "approve" and velocity["txn_count_1h"] > VELOCITY_REVIEW_THRESHOLD:
+        decision = "review"
+
     latency_ms = (time.perf_counter() - start_time) * 1000
 
     return {
@@ -65,5 +93,7 @@ def decide(txn: Transaction):
         "segment": segment,
         "expected_cost_approve": round(cost_approve, 2),
         "expected_cost_decline": round(cost_decline, 2),
+        "card_velocity_1h": velocity["txn_count_1h"],
+        "card_velocity_24h": velocity["txn_count_24h"],
         "latency_ms": round(latency_ms, 2),
     }
