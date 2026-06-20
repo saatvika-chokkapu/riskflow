@@ -1,6 +1,5 @@
 import pandas as pd
 import joblib
-from pyiceberg.catalog import load_catalog
 
 BUCKET_NAME = "riskflow-lakehouse-7d75d72b"
 
@@ -44,6 +43,7 @@ def decide_transaction(fraud_probability, amount, segment):
 
 
 if __name__ == "__main__":
+    from pyiceberg.catalog import load_catalog
     model = joblib.load("backend/fraud_model.pkl")
 
     catalog = load_catalog("riskflow", **{"type": "glue", "warehouse": f"s3://{BUCKET_NAME}/"})
