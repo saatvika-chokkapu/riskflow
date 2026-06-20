@@ -27,3 +27,4 @@ data/
 .DS_Store
 *.pkl
 dbt_venv/
+node_modules/
