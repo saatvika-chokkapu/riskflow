@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: riskflow_raw
+    database: riskflow
+    schema: analytics
+    tables:
+      - name: raw_transactions
