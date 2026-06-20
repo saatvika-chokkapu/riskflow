@@ -25,6 +25,8 @@ data/
 
 # OS
 .DS_Store
-*.pkl
 dbt_venv/
 node_modules/
+*.pkl
+!backend/fraud_model.pkl
+!backend/encoders.pkl
