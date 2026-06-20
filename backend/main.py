@@ -5,8 +5,17 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from backend.cost_model import assign_segment, decide_transaction
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(title="RiskFlow Decisioning API")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 import snowflake.connector
 from dotenv import load_dotenv
 
