@@ -170,3 +170,17 @@ def pipeline_health():
         "api_latency_ms_p50": 28,
         "api_latency_ms_p95": 62,
     }
+@app.get("/api/sensitivity-analysis")
+def sensitivity_analysis():
+    conn = get_snowflake_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT cost_multiplier, riskflow_total_cost, naive_total_cost,
+               savings_vs_naive, savings_pct, fraud_caught_count, false_declines_count
+        FROM sensitivity_results
+        ORDER BY cost_multiplier
+    """)
+    cols = [c[0].lower() for c in cursor.description]
+    rows = [dict(zip(cols, row)) for row in cursor.fetchall()]
+    conn.close()
+    return rows

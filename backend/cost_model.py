@@ -28,15 +28,19 @@ def decline_cost(segment):
     lifetime_value = SEGMENT_LIFETIME_VALUE.get(segment, SEGMENT_LIFETIME_VALUE["unknown"])
     return CHURN_RATE_AFTER_FALSE_DECLINE * lifetime_value
 
-def decide_transaction(fraud_probability, amount, segment):
+def decide_transaction(fraud_probability, amount, segment, cost_multiplier=1.0):
     """
     Returns (decision, expected_cost_approve, expected_cost_decline)
     decision is one of: 'approve', 'decline'
+
+    cost_multiplier scales the assumed decline_cost (churn rate x lifetime value),
+    used for sensitivity analysis — since both inputs are documented assumptions,
+    not values derived from this dataset. Default 1.0 reproduces the original logic.
     """
     p_legitimate = 1 - fraud_probability
 
     cost_of_approving = fraud_probability * amount
-    cost_of_declining = p_legitimate * decline_cost(segment)
+    cost_of_declining = p_legitimate * decline_cost(segment) * cost_multiplier
 
     decision = "decline" if cost_of_declining < cost_of_approving else "approve"
     return decision, cost_of_approving, cost_of_declining
