@@ -42,11 +42,16 @@ body { margin: 0; }
 .seg-active { background:var(--card); color:var(--text); box-shadow:0 1px 3px var(--shadow-color); }
 
 .rf-range { -webkit-appearance:none; appearance:none; outline:none; cursor:pointer; height:6px; border-radius:999px; }
-.rf-range::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--blue); border:3px solid var(--card); box-shadow:0 0 0 1px var(--blue),0 2px 6px var(--shadow-color); margin-top:-7px; cursor:pointer; transition:transform .1s; }
-.rf-range::-webkit-slider-thumb:hover { transform:scale(1.12); }
+.rf-range::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--blue); border:3px solid var(--card); box-shadow:0 0 0 1px var(--blue),0 2px 6px var(--shadow-color); margin-top:-7px; cursor:pointer; transition:transform .15s; }
+.rf-range::-webkit-slider-thumb:hover { transform:scale(1.15); }
 .rf-range::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:var(--blue); border:3px solid var(--card); box-shadow:0 0 0 1px var(--blue); cursor:pointer; }
 
 @keyframes mascotBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
 @keyframes mascotBlink { 0%,92%,100%{transform:scaleY(1)} 96%{transform:scaleY(.12)} }
 @keyframes leafSway { 0%,100%{transform:rotate(-10deg)} 50%{transform:rotate(13deg)} }
 @keyframes pulseDot { 0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--teal) 55%,transparent)} 70%{box-shadow:0 0 0 7px transparent} 100%{box-shadow:0 0 0 0 transparent} }
+@keyframes cardIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+@keyframes tileIn { from { opacity:0; transform:scale(.97); } to { opacity:1; transform:scale(1); } }
+
+.tile-hover { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; animation: tileIn .4s ease-out both; }
+.tile-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 24px var(--shadow-color); border-color: color-mix(in oklab, var(--blue) 35%, var(--border)); }
