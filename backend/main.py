@@ -3,7 +3,7 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
-from backend.cost_model import assign_segment, decide_transaction
+from backend.cost_model import assign_segment, decide_transaction, VELOCITY_REVIEW_THRESHOLD
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -39,7 +39,6 @@ velocity_table = dynamodb_resource.Table("riskflow-card-velocity")
 
 # Documented assumption, not derived from this dataset:
 # more than 5 transactions/hour from one card resembles card-testing fraud patterns
-VELOCITY_REVIEW_THRESHOLD = 5
 
 def get_card_velocity(card_id: str):
     try:

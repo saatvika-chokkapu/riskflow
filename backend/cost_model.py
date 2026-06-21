@@ -6,6 +6,10 @@ BUCKET_NAME = "riskflow-lakehouse-7d75d72b"
 # Documented assumptions from docs/cost_model_assumptions.md — NOT derived from this dataset
 CHURN_RATE_AFTER_FALSE_DECLINE = 0.39
 
+# Documented assumption, not derived from this dataset: more than 5 transactions
+# from one card within 1 hour resembles card-testing fraud patterns.
+VELOCITY_REVIEW_THRESHOLD = 5
+
 # Estimated lifetime value per segment — a reasonable, documented proxy,
 # not real CLV data (the dataset has none). Higher for credit (typically
 # higher-spend, more loyal) vs debit customers.
