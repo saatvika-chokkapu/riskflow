@@ -10,7 +10,7 @@ const tile: React.CSSProperties = {
   background: "var(--tile)", border: "1px solid var(--border)", borderRadius: "var(--radius)",
   padding: "var(--tile-pad)",
 };
-const tileLabel = (color: string): React.CSSProperties => ({
+const tileLabel: React.CSSProperties = ({
   display: "flex", alignItems: "center", gap: 8, marginBottom: 16,
 });
 const dot = (color: string): React.CSSProperties => ({ width: 7, height: 7, borderRadius: 2, background: color });
@@ -77,17 +77,17 @@ export default function CostAnalysis() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "var(--gap)" }}>
         <div style={tile}>
-          <div style={tileLabel("var(--blue)")}><span style={dot("var(--blue)")} /><span style={labelText}>RiskFlow cost</span></div>
+          <div style={tileLabel}><span style={dot("var(--blue)")} /><span style={labelText}>RiskFlow cost</span></div>
           <div style={bigNumber("var(--blue)")}>{fmt(totalRiskflow)}</div>
           <div style={{ marginTop: 9, font: "400 12px 'IBM Plex Sans'", color: "var(--muted)" }}>cost-aware decisioning</div>
         </div>
         <div style={tile}>
-          <div style={tileLabel("var(--violet)")}><span style={dot("var(--violet)")} /><span style={labelText}>Naive cost</span></div>
+          <div style={tileLabel}><span style={dot("var(--violet)")} /><span style={labelText}>Naive cost</span></div>
           <div style={bigNumber("var(--violet)")}>{fmt(totalNaive)}</div>
           <div style={{ marginTop: 9, font: "400 12px 'IBM Plex Sans'", color: "var(--muted)" }}>fixed 0.50 threshold</div>
         </div>
         <div style={tile}>
-          <div style={tileLabel("var(--teal)")}><span style={dot("var(--teal)")} /><span style={labelText}>Savings</span></div>
+          <div style={tileLabel}><span style={dot("var(--teal)")} /><span style={labelText}>Savings</span></div>
           <div style={{ font: "600 30px/1 'IBM Plex Mono',monospace", color: "var(--teal)", fontVariantNumeric: "tabular-nums" }}>{fmt(savings)}</div>
           <div style={{ marginTop: 11, display: "inline-flex", alignItems: "center", gap: 5, background: "color-mix(in oklab,var(--teal) 16%,transparent)", color: "var(--teal)", padding: "4px 9px", borderRadius: 999, font: "600 11px 'IBM Plex Mono',monospace" }}>
             <span>↓</span>{savingsPct}% lower cost
